@@ -2344,7 +2344,7 @@ header p{font-size:11px; margin-top:5px; color:#68736d;}
 @media (max-width: 900px) {
   .now-playing-panel {
     width: calc(100vw - 25px) !important;
-    right: 12px !important;
+    right: 12px !important; 
     left: 12px !important;
   }
 }
@@ -3639,5 +3639,61 @@ header p{font-size:11px; margin-top:5px; color:#68736d;}
 
   .discover-art {
     display: none;
+  }
+}
+/* =========================================
+   MOBILE RESPONSIVE FIX
+   ========================================= */
+
+@media (max-width: 700px) {
+
+  /* Sidebar */
+  .sidebar {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    position: relative !important;
+    overflow: visible !important;
+  }
+
+  .sidebar-scroll-area {
+    max-height: 220px !important;
+    overflow-y: auto !important;
+  }
+
+  .sidebar-account {
+    margin-top: 8px !important;
+  }
+
+  /* Discover section */
+  .discover-hero {
+    width: 100% !important;
+    min-height: auto !important;
+    margin: 15px 0 25px !important;
+    padding: 22px !important;
+    box-sizing: border-box !important;
+  }
+
+  .discover-content {
+    max-width: 100% !important;
+  }
+
+  .discover-content h1 {
+    font-size: 28px !important;
+    line-height: 1.15 !important;
+  }
+
+  .discover-content p {
+    font-size: 13px !important;
+  }
+
+  /* Prevent horizontal overflow */
+  * {
+    max-width: 100%;
+  }
+
+  body {
+    overflow-x: hidden !important;
   }
 }
