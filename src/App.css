@@ -3697,3 +3697,160 @@ header p{font-size:11px; margin-top:5px; color:#68736d;}
     overflow-x: hidden !important;
   }
 }
+/* =========================================
+   SOUNDIFY - FINAL MOBILE FIX
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  .app {
+    width: 100%;
+    min-width: 0;
+    display: block;
+  }
+
+  /* Mobile par sidebar completely hide */
+  .sidebar {
+    display: none !important;
+  }
+
+  .main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    padding: 18px 14px 80px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Header */
+  header {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 20px !important;
+    gap: 10px;
+  }
+
+  header h2 {
+    font-size: 20px !important;
+    max-width: calc(100% - 50px) !important;
+  }
+
+  header p {
+    max-width: calc(100% - 50px) !important;
+  }
+
+  /* Search */
+  .search-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 24px !important;
+    gap: 7px !important;
+  }
+
+  .search-box input {
+    min-width: 0 !important;
+    width: 100% !important;
+    height: 44px !important;
+    padding: 0 14px !important;
+  }
+
+  .search-box button {
+    flex-shrink: 0 !important;
+    height: 44px !important;
+    padding: 0 14px !important;
+  }
+
+  /* Player */
+  .player-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 22px !important;
+    padding: 22px 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .album {
+    width: min(280px, 75vw) !important;
+    height: min(280px, 75vw) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .song-info {
+    width: 100% !important;
+    min-width: 0 !important;
+    text-align: center !important;
+  }
+
+  .song-info h1 {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: 26px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .song-info p {
+    max-width: 100% !important;
+  }
+
+  /* Controls */
+  .controls {
+    width: 100% !important;
+    gap: 12px !important;
+    margin-top: 18px !important;
+  }
+
+  /* Volume */
+  .volume {
+    width: 100% !important;
+    max-width: 210px !important;
+  }
+
+  .volume input {
+    width: 130px !important;
+    min-width: 0 !important;
+  }
+
+  /* Song section */
+  .recent {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 38px !important;
+  }
+
+  .song-list {
+    width: 100% !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .song-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Status */
+  .status {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Footer */
+  footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
