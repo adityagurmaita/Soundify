@@ -3853,4 +3853,669 @@ header p{font-size:11px; margin-top:5px; color:#68736d;}
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
+} /* =====================================================
+   SOUNDIFY — FINAL MOBILE PLAYER FIX
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  /* Old desktop/full player completely hide */
+  .player-section {
+    display: none !important;
+  }
+
+  .right-player {
+    display: none !important;
+  }
+
+  /* Mobile mini player */
+  .now-playing-panel {
+    display: flex !important;
+    position: fixed !important;
+    left: 8px !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    top: auto !important;
+
+    width: auto !important;
+    height: 68px !important;
+    min-height: 68px !important;
+    max-height: 68px !important;
+
+    padding: 8px !important;
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+
+    z-index: 99999 !important;
+  }
+
+  /* Album */
+  .now-playing-panel .np-art {
+    position: absolute !important;
+    left: 8px !important;
+    top: 8px !important;
+
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .now-playing-panel .np-art img {
+    width: 52px !important;
+    height: 52px !important;
+    object-fit: cover !important;
+    border: 0 !important;
+  }
+
+  /* Song information */
+  .now-playing-panel .np-info {
+    position: absolute !important;
+    left: 70px !important;
+    right: 62px !important;
+    top: 10px !important;
+
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+  }
+
+  .now-playing-panel .np-info h3 {
+    margin: 0 !important;
+    font-size: 13px !important;
+    line-height: 18px !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .now-playing-panel .np-info p {
+    margin: 0 !important;
+    font-size: 10px !important;
+    line-height: 16px !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Only play button */
+  .now-playing-panel .np-controls {
+    position: absolute !important;
+    right: 8px !important;
+    top: 14px !important;
+
+    width: 40px !important;
+    height: 40px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .now-playing-panel .np-controls button {
+    display: none !important;
+  }
+
+  .now-playing-panel .np-controls .np-play {
+    display: flex !important;
+
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 50% !important;
+  }
+
+  /* Progress stays INSIDE mini player */
+  .now-playing-panel .np-progress {
+    position: absolute !important;
+
+    left: 70px !important;
+    right: 62px !important;
+    bottom: 6px !important;
+
+    width: auto !important;
+    height: 3px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .now-playing-panel .np-progress .progress-bar {
+    width: 100% !important;
+    height: 3px !important;
+    margin: 0 !important;
+  }
+
+  .now-playing-panel .np-progress .time {
+    display: none !important;
+  }
+
+  /* Hide desktop-only sections */
+  .now-playing-panel .np-heading,
+  .now-playing-panel .np-actions,
+  .now-playing-panel .up-next,
+  .now-playing-panel .np-volume,
+  .now-playing-panel .np-equalizer,
+  .now-playing-panel .np-ring {
+    display: none !important;
+  }
+
+  /* Give content space above player */
+  .main {
+    padding-bottom: 95px !important;
+  }
+
+  body {
+    overflow-x: hidden !important;
+  }
+}
+/* =====================================================
+   SOUNDIFY — FINAL MOBILE / SPOTIFY STYLE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  html, body, #root {
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .app {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* SIDEBAR HIDE */
+  .sidebar {
+    display: none !important;
+  }
+
+  /* MAIN FULL SCREEN */
+  .main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 16px 14px 105px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* HEADER */
+  header {
+    width: 100% !important;
+    margin-bottom: 16px !important;
+  }
+
+  header h2 {
+    font-size: 21px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* SEARCH */
+  .search-box {
+    width: 100% !important;
+    height: 48px !important;
+    margin-bottom: 18px !important;
+    box-sizing: border-box !important;
+  }
+
+  .search-box input {
+    min-width: 0 !important;
+    font-size: 14px !important;
+  }
+
+  /* HERO */
+  .discover-hero,
+  .soundify-hero {
+    width: 100% !important;
+    min-height: 190px !important;
+    padding: 22px 18px !important;
+    margin: 12px 0 24px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .discover-art,
+  .hero-art {
+    display: none !important;
+  }
+
+  .discover-content,
+  .hero-copy {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .discover-content h1,
+  .hero-copy h1 {
+    font-size: 29px !important;
+    line-height: 1.08 !important;
+  }
+
+  /* SECTION */
+  .section-heading {
+    margin-bottom: 12px !important;
+  }
+
+  .section-heading h2,
+  .recent h2 {
+    font-size: 19px !important;
+  }
+
+  /* SONGS — COMPACT SPOTIFY STYLE */
+  .popular-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 4px !important;
+  }
+
+  .popular-card {
+    display: grid !important;
+    grid-template-columns: 58px minmax(0, 1fr) 40px !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 66px !important;
+    padding: 6px !important;
+    box-sizing: border-box !important;
+    border-radius: 9px !important;
+  }
+
+  .popular-art-wrap {
+    width: 54px !important;
+    height: 54px !important;
+    aspect-ratio: auto !important;
+    border-radius: 7px !important;
+  }
+
+  .popular-meta {
+    min-width: 0 !important;
+    padding: 0 8px !important;
+  }
+
+  .popular-meta h4 {
+    font-size: 13px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .popular-meta p {
+    font-size: 10px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .card-play {
+    opacity: 1 !important;
+    transform: none !important;
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  /* OTHER GRIDS */
+  .playlist-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  /* DESKTOP PLAYER HIDE */
+  .player-section,
+  .right-player {
+    display: none !important;
+  }
+
+  /* MOBILE MINI PLAYER */
+  .now-playing-panel {
+    display: block !important;
+    position: fixed !important;
+    left: 8px !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    top: auto !important;
+
+    width: auto !important;
+    height: 68px !important;
+    min-height: 68px !important;
+    max-height: 68px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border-radius: 12px !important;
+    overflow: hidden !important;
+
+    z-index: 99999 !important;
+  }
+
+  .now-playing-panel .np-art {
+    display: block !important;
+    position: absolute !important;
+    left: 8px !important;
+    top: 8px !important;
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .now-playing-panel .np-art img {
+    width: 52px !important;
+    height: 52px !important;
+    object-fit: cover !important;
+  }
+
+  .now-playing-panel .np-info {
+    position: absolute !important;
+    left: 70px !important;
+    right: 60px !important;
+    top: 10px !important;
+    width: auto !important;
+    text-align: left !important;
+  }
+
+  .now-playing-panel .np-info h3 {
+    margin: 0 !important;
+    font-size: 13px !important;
+    line-height: 18px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .now-playing-panel .np-info p {
+    margin: 0 !important;
+    font-size: 10px !important;
+    line-height: 15px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .now-playing-panel .np-controls {
+    position: absolute !important;
+    right: 8px !important;
+    top: 14px !important;
+    width: 40px !important;
+    height: 40px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .now-playing-panel .np-controls button {
+    display: none !important;
+  }
+
+  .now-playing-panel .np-controls .np-play {
+    display: flex !important;
+    width: 40px !important;
+    height: 40px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+  }
+
+  .now-playing-panel .np-progress {
+    position: absolute !important;
+    left: 70px !important;
+    right: 60px !important;
+    bottom: 7px !important;
+    width: auto !important;
+    margin: 0 !important;
+  }
+
+  .now-playing-panel .np-progress .progress-bar {
+    width: 100% !important;
+    height: 3px !important;
+  }
+
+  .now-playing-panel .np-progress .time,
+  .now-playing-panel .np-heading,
+  .now-playing-panel .np-actions,
+  .now-playing-panel .up-next,
+  .now-playing-panel .np-volume,
+  .now-playing-panel .np-equalizer,
+  .now-playing-panel .np-ring {
+    display: none !important;
+  }
+
+  /* NORMAL SONG LIST */
+  .song-list {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+
+  .song-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 380px) {
+
+  .main {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .discover-content h1,
+  .hero-copy h1 {
+    font-size: 25px !important;
+  }
+
+  .popular-card {
+    grid-template-columns: 52px minmax(0, 1fr) 36px !important;
+  }
+
+  .popular-art-wrap {
+    width: 48px !important;
+    height: 48px !important;
+  }
+}
+/* =====================================================
+   FINAL MOBILE FIX — ACTUAL RIGHT PLAYER
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  /* Desktop right player ko mobile mini player banao */
+  .right-player {
+    display: block !important;
+    position: fixed !important;
+    left: 8px !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    top: auto !important;
+
+    width: auto !important;
+    height: 72px !important;
+    min-height: 72px !important;
+
+    margin: 0 !important;
+    padding: 8px !important;
+
+    border-radius: 14px !important;
+    overflow: hidden !important;
+
+    z-index: 999999 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Album */
+  .right-player .right-album {
+    position: absolute !important;
+    left: 8px !important;
+    top: 8px !important;
+
+    width: 56px !important;
+    height: 56px !important;
+
+    margin: 0 !important;
+  }
+
+  .right-player .right-album img {
+    width: 56px !important;
+    height: 56px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+  }
+
+  .right-player .right-equalizer {
+    display: none !important;
+  }
+
+  /* Song information */
+  .right-player .right-song-info {
+    position: absolute !important;
+    left: 74px !important;
+    right: 125px !important;
+    top: 12px !important;
+
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    text-align: left !important;
+  }
+
+  .right-player .right-song-info h2 {
+    margin: 0 !important;
+    font-size: 13px !important;
+    line-height: 18px !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .right-player .right-song-info p {
+    margin: 0 !important;
+    font-size: 10px !important;
+    line-height: 15px !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .right-player .right-song-info small,
+  .right-player .right-like {
+    display: none !important;
+  }
+
+  /* Progress */
+  .right-player .right-progress {
+    position: absolute !important;
+    left: 74px !important;
+    right: 125px !important;
+    bottom: 8px !important;
+
+    width: auto !important;
+    margin: 0 !important;
+  }
+
+  .right-player .right-progress input {
+    width: 100% !important;
+    height: 3px !important;
+    margin: 0 !important;
+  }
+
+  .right-player .right-progress > div {
+    display: none !important;
+  }
+
+  /* Controls */
+  .right-player .right-controls {
+    position: absolute !important;
+    right: 8px !important;
+    top: 16px !important;
+
+    width: 110px !important;
+    height: 40px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .right-player .right-controls button {
+    display: none !important;
+  }
+
+  /* Previous */
+  .right-player .right-controls button:nth-child(2),
+  /* Play */
+  .right-player .right-controls .right-play,
+  /* Next */
+  .right-player .right-controls button:nth-child(4) {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 32px !important;
+    height: 32px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .right-player .right-controls .right-play {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+  }
+
+  /* Hide desktop-only sections */
+  .right-player .right-player-title,
+  .right-player .right-volume,
+  .right-player .up-next {
+    display: none !important;
+  }
+
+  /* Old mobile player, if present */
+  .now-playing-panel {
+    display: none !important;
+  }
+
+  .main {
+    padding-bottom: 95px !important;
+  }
+}
+
+@media (max-width: 380px) {
+
+  .right-player {
+    left: 5px !important;
+    right: 5px !important;
+  }
+
+  .right-player .right-song-info {
+    left: 68px !important;
+    right: 112px !important;
+  }
+
+  .right-player .right-progress {
+    left: 68px !important;
+    right: 112px !important;
+  }
+
+  .right-player .right-controls {
+    right: 6px !important;
+    width: 100px !important;
+  }
 }
