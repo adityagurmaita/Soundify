@@ -4933,3 +4933,41 @@ header p{font-size:11px; margin-top:5px; color:#68736d;}
     width: 94px !important;
   }
 }
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 62px;
+    background: #090d0a;
+    border-top: 1px solid #1c2b20;
+    z-index: 10000;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .mobile-bottom-nav button {
+    background: none;
+    border: none;
+    color: #777;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .mobile-bottom-nav button span {
+    font-size: 10px;
+  }
+
+  .mobile-bottom-nav button:hover {
+    color: #1ed760;
+  }
+}

@@ -1397,7 +1397,11 @@ function App() {
           )}
 
         {/* ================= FOOTER ================= */}
-
+<nav className="mobile-bottom-nav">
+  <button onClick={goHome}>⌂<span>Home</span></button>
+  <button onClick={showLiked}>♥<span>Liked</span></button>
+  <button onClick={showLibrary}>▣<span>Library</span></button>
+</nav>
         <footer
           style={{
             textAlign: "center",
