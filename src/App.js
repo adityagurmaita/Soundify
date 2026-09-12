@@ -35,6 +35,11 @@ function App() {
 
   const [activePage, setActivePage] = useState("home");
 
+  // ================= MOBILE NOW PLAYING =================
+
+  const [showMobileNowPlaying, setShowMobileNowPlaying] =
+    useState(false);
+
   // ================= LIKED SONGS =================
 
   const [likedSongs, setLikedSongs] = useState(() => {
@@ -129,7 +134,10 @@ function App() {
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
     };
   }, []);
 
@@ -206,6 +214,7 @@ function App() {
       if (e.code === "Escape") {
         setSearch("");
         setShowAccount(false);
+        setShowMobileNowPlaying(false);
       }
     };
 
@@ -247,10 +256,13 @@ function App() {
       nextIndex = currentSong;
     } else if (shuffle && songs.length > 1) {
       do {
-        nextIndex = Math.floor(Math.random() * songs.length);
+        nextIndex = Math.floor(
+          Math.random() * songs.length
+        );
       } while (nextIndex === currentSong);
     } else {
-      nextIndex = (currentSong + 1) % songs.length;
+      nextIndex =
+        (currentSong + 1) % songs.length;
     }
 
     setCurrentSong(nextIndex);
@@ -302,7 +314,9 @@ function App() {
     const duration = audioRef.current.duration;
 
     if (duration) {
-      audioRef.current.currentTime = (value / 100) * duration;
+      audioRef.current.currentTime =
+        (value / 100) * duration;
+
       setProgress(value);
     }
   };
@@ -326,15 +340,23 @@ function App() {
   // ================= LIKE =================
 
   const isLiked = (id) => {
-    return likedSongs.some((item) => item.id === id);
+    return likedSongs.some(
+      (item) => item.id === id
+    );
   };
 
   const toggleLike = () => {
     if (!song) return;
 
     setLikedSongs((prev) => {
-      if (prev.some((item) => item.id === song.id)) {
-        return prev.filter((item) => item.id !== song.id);
+      if (
+        prev.some(
+          (item) => item.id === song.id
+        )
+      ) {
+        return prev.filter(
+          (item) => item.id !== song.id
+        );
       }
 
       return [...prev, song];
@@ -372,24 +394,29 @@ function App() {
     setActivePage("home");
     setSelectedPlaylist(null);
     setShowAccount(false);
+    setShowMobileNowPlaying(false);
   };
 
   const showLiked = () => {
     setActivePage("liked");
     setSelectedPlaylist(null);
     setShowAccount(false);
+    setShowMobileNowPlaying(false);
   };
 
   const showLibrary = () => {
     setActivePage("library");
     setSelectedPlaylist(null);
     setShowAccount(false);
+    setShowMobileNowPlaying(false);
   };
 
   // ================= PLAYLIST =================
 
   const createPlaylist = () => {
-    const name = window.prompt("Playlist ka naam enter karo:");
+    const name = window.prompt(
+      "Playlist ka naam enter karo:"
+    );
 
     if (!name || !name.trim()) return;
 
@@ -399,7 +426,10 @@ function App() {
       songs: [],
     };
 
-    setPlaylists((prev) => [...prev, newPlaylist]);
+    setPlaylists((prev) => [
+      ...prev,
+      newPlaylist,
+    ]);
 
     setActivePage("library");
     setShowAccount(false);
@@ -419,29 +449,41 @@ function App() {
             (item) => item.id === song.id
           )
         ) {
-          alert("Song already playlist mein hai.");
+          alert(
+            "Song already playlist mein hai."
+          );
+
           return playlist;
         }
 
         return {
           ...playlist,
-          songs: [...playlist.songs, song],
+          songs: [
+            ...playlist.songs,
+            song,
+          ],
         };
       })
     );
 
-    alert("Song playlist mein add ho gaya 🎵");
+    alert(
+      "Song playlist mein add ho gaya 🎵"
+    );
   };
 
   const deletePlaylist = (playlistId) => {
-    const confirmDelete = window.confirm(
-      "Kya tum ye playlist delete karna chahte ho?"
-    );
+    const confirmDelete =
+      window.confirm(
+        "Kya tum ye playlist delete karna chahte ho?"
+      );
 
     if (!confirmDelete) return;
 
     setPlaylists((prev) =>
-      prev.filter((playlist) => playlist.id !== playlistId)
+      prev.filter(
+        (playlist) =>
+          playlist.id !== playlistId
+      )
     );
 
     setSelectedPlaylist(null);
@@ -465,12 +507,22 @@ function App() {
     setActivePage("home");
   };
 
+  // ================= MOBILE PLAY SONG =================
+
+  const playMobileSong = (index) => {
+    setCurrentSong(index);
+    setProgress(0);
+    setIsPlaying(true);
+    setActivePage("home");
+  };
+
   // ================= FIREBASE LOGOUT =================
 
   const logout = async () => {
-    const confirmLogout = window.confirm(
-      "Kya tum logout karna chahte ho?"
-    );
+    const confirmLogout =
+      window.confirm(
+        "Kya tum logout karna chahte ho?"
+      );
 
     if (!confirmLogout) return;
 
@@ -478,11 +530,17 @@ function App() {
       await signOut(auth);
 
       setShowAccount(false);
+      setShowMobileNowPlaying(false);
       setIsPlaying(false);
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error(
+        "Logout error:",
+        error
+      );
 
-      alert("Logout nahi ho paya. Dobara try karo.");
+      alert(
+        "Logout nahi ho paya. Dobara try karo."
+      );
     }
   };
 
@@ -493,10 +551,17 @@ function App() {
       return "0:00";
     }
 
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
+    const mins = Math.floor(
+      seconds / 60
+    );
 
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
+    const secs = Math.floor(
+      seconds % 60
+    );
+
+    return `${mins}:${secs
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   const currentTime = audioRef.current
@@ -540,6 +605,20 @@ function App() {
     user.displayName ||
     user.email?.split("@")[0] ||
     "User";
+
+  // ================= MOBILE NOW PLAYING STYLES =================
+
+  const mobileNowPlayingStyle = {
+    position: "fixed",
+    inset: 0,
+    zIndex: 100000,
+    background:
+      "linear-gradient(180deg, #10251a 0%, #050807 55%, #020302 100%)",
+    color: "#fff",
+    overflowY: "auto",
+    padding: "18px 18px 30px",
+    boxSizing: "border-box",
+  };
 
   // ================= RENDER =================
 
@@ -649,8 +728,14 @@ function App() {
               <p
                 key={playlist.id}
                 onClick={() => {
-                  setSelectedPlaylist(playlist);
-                  setActivePage("playlist");
+                  setSelectedPlaylist(
+                    playlist
+                  );
+
+                  setActivePage(
+                    "playlist"
+                  );
+
                   setShowAccount(false);
                 }}
               >
@@ -730,7 +815,9 @@ function App() {
           >
 
             <div className="sidebar-avatar">
-              {userName.charAt(0).toUpperCase()}
+              {userName
+                .charAt(0)
+                .toUpperCase()}
             </div>
 
             <div className="sidebar-user-info">
@@ -746,7 +833,9 @@ function App() {
             </div>
 
             <span className="sidebar-arrow">
-              {showAccount ? "⌃" : "⌄"}
+              {showAccount
+                ? "⌃"
+                : "⌄"}
             </span>
 
           </button>
@@ -831,7 +920,9 @@ function App() {
 
                 <div
                   className={`album ${
-                    isPlaying ? "playing" : ""
+                    isPlaying
+                      ? "playing"
+                      : ""
                   }`}
                 >
 
@@ -842,12 +933,14 @@ function App() {
 
                   {isPlaying && (
                     <div className="equalizer">
+
                       <span></span>
                       <span></span>
                       <span></span>
                       <span></span>
                       <span></span>
                       <span></span>
+
                     </div>
                   )}
 
@@ -904,11 +997,15 @@ function App() {
                 <div className="time">
 
                   <span>
-                    {formatTime(currentTime)}
+                    {formatTime(
+                      currentTime
+                    )}
                   </span>
 
                   <span>
-                    {formatTime(duration)}
+                    {formatTime(
+                      duration
+                    )}
                   </span>
 
                 </div>
@@ -926,7 +1023,9 @@ function App() {
                   }
                   title="Shuffle"
                 >
-                  {shuffle ? "🔀" : "↝"}
+                  {shuffle
+                    ? "🔀"
+                    : "↝"}
                 </button>
 
                 <button
@@ -940,7 +1039,9 @@ function App() {
                   className="play-btn"
                   onClick={togglePlay}
                 >
-                  {isPlaying ? "❚❚" : "▶"}
+                  {isPlaying
+                    ? "❚❚"
+                    : "▶"}
                 </button>
 
                 <button
@@ -957,7 +1058,9 @@ function App() {
                   }
                   title="Repeat"
                 >
-                  {repeat ? "🔁" : "↻"}
+                  {repeat
+                    ? "🔁"
+                    : "↻"}
                 </button>
 
               </div>
@@ -974,7 +1077,8 @@ function App() {
                     cursor: "pointer",
                   }}
                 >
-                  {muted || volume === 0
+                  {muted ||
+                  volume === 0
                     ? "🔇"
                     : volume < 0.5
                     ? "🔉"
@@ -987,11 +1091,15 @@ function App() {
                   max="1"
                   step="0.01"
                   value={
-                    muted ? 0 : volume
+                    muted
+                      ? 0
+                      : volume
                   }
                   onChange={(e) => {
                     const value =
-                      Number(e.target.value);
+                      Number(
+                        e.target.value
+                      );
 
                     setVolume(value);
 
@@ -1020,7 +1128,8 @@ function App() {
                       <div
                         key={item.id}
                         className={`song-card ${
-                          index === currentSong
+                          index ===
+                          currentSong
                             ? "selected"
                             : ""
                         }`}
@@ -1062,46 +1171,55 @@ function App() {
 
             </>
           )}
-          {/* ================= DISCOVER HERO ================= */}
 
-{!loading && song && activePage === "home" && (
-  <section className="discover-hero">
+        {/* ================= DISCOVER HERO ================= */}
 
-    <div className="discover-content">
-      <span className="discover-label">
-        SOUNDIFY • DISCOVER
-      </span>
+        {!loading &&
+          song &&
+          activePage === "home" && (
+            <section className="discover-hero">
 
-      <h1>
-        Discover New
-        <br />
-        <span>Sounds.</span>
-      </h1>
+              <div className="discover-content">
 
-      <p>
-        Find something new to listen to and let
-        the music set the mood.
-      </p>
+                <span className="discover-label">
+                  SOUNDIFY • DISCOVER
+                </span>
 
-      <button
-        className="discover-btn"
-        onClick={() => playSong(currentSong)}
-      >
-        ▶ Play Now
-      </button>
-    </div>
+                <h1>
+                  Discover New
+                  <br />
+                  <span>Sounds.</span>
+                </h1>
 
-    <div className="discover-art">
-      <div className="discover-glow"></div>
+                <p>
+                  Find something new to listen to and let
+                  the music set the mood.
+                </p>
 
-      <img
-        src={song.image}
-        alt={song.title}
-      />
-    </div>
+                <button
+                  className="discover-btn"
+                  onClick={() =>
+                    playSong(currentSong)
+                  }
+                >
+                  ▶ Play Now
+                </button>
 
-  </section>
-)}
+              </div>
+
+              <div className="discover-art">
+
+                <div className="discover-glow"></div>
+
+                <img
+                  src={song.image}
+                  alt={song.title}
+                />
+
+              </div>
+
+            </section>
+          )}
 
         {/* ================= LIKED ================= */}
 
@@ -1113,7 +1231,8 @@ function App() {
                 ❤️ Liked Songs
               </h2>
 
-              {likedSongs.length === 0 ? (
+              {likedSongs.length ===
+              0 ? (
                 <div className="status">
 
                   💔 Abhi koi liked song nahi hai.
@@ -1134,10 +1253,21 @@ function App() {
                         className="song-card"
                         onClick={() => {
 
-                          setSongs(likedSongs);
-                          setCurrentSong(index);
-                          setActivePage("home");
-                          setIsPlaying(true);
+                          setSongs(
+                            likedSongs
+                          );
+
+                          setCurrentSong(
+                            index
+                          );
+
+                          setActivePage(
+                            "home"
+                          );
+
+                          setIsPlaying(
+                            true
+                          );
 
                         }}
                       >
@@ -1188,13 +1318,19 @@ function App() {
               <button
                 onClick={createPlaylist}
                 style={{
-                  marginBottom: "20px",
-                  padding: "10px 18px",
+                  marginBottom:
+                    "20px",
+                  padding:
+                    "10px 18px",
                   border: "none",
-                  borderRadius: "20px",
-                  background: "#1ed760",
-                  cursor: "pointer",
-                  fontWeight: "bold",
+                  borderRadius:
+                    "20px",
+                  background:
+                    "#1ed760",
+                  cursor:
+                    "pointer",
+                  fontWeight:
+                    "bold",
                 }}
               >
                 ➕ Create Playlist
@@ -1223,12 +1359,15 @@ function App() {
                       <div>
 
                         <h4>
-                          📁 {playlist.name}
+                          📁{" "}
+                          {playlist.name}
                         </h4>
 
                         <p>
                           {
-                            playlist.songs.length
+                            playlist
+                              .songs
+                              .length
                           }{" "}
                           songs
                         </p>
@@ -1256,7 +1395,10 @@ function App() {
             <section className="recent">
 
               <h2>
-                📁 {selectedPlaylist.name}
+                📁{" "}
+                {
+                  selectedPlaylist.name
+                }
               </h2>
 
               <button
@@ -1266,19 +1408,26 @@ function App() {
                   )
                 }
                 style={{
-                  marginBottom: "20px",
-                  padding: "9px 16px",
+                  marginBottom:
+                    "20px",
+                  padding:
+                    "9px 16px",
                   border: "none",
-                  borderRadius: "20px",
-                  background: "#ff4d4d",
-                  color: "white",
-                  cursor: "pointer",
+                  borderRadius:
+                    "20px",
+                  background:
+                    "#ff4d4d",
+                  color:
+                    "white",
+                  cursor:
+                    "pointer",
                 }}
               >
                 🗑 Delete Playlist
               </button>
 
-              {selectedPlaylist.songs.length ===
+              {selectedPlaylist
+                .songs.length ===
               0 ? (
                 <div className="status">
                   🎵 Playlist empty hai.
@@ -1286,50 +1435,60 @@ function App() {
               ) : (
                 <div className="song-list">
 
-                  {selectedPlaylist.songs.map(
-                    (item, index) => (
-                      <div
-                        key={item.id}
-                        className="song-card"
-                        onClick={() => {
+                  {
+                    selectedPlaylist.songs.map(
+                      (item, index) => (
+                        <div
+                          key={item.id}
+                          className="song-card"
+                          onClick={() => {
 
-                          setSongs(
-                            selectedPlaylist.songs
-                          );
+                            setSongs(
+                              selectedPlaylist.songs
+                            );
 
-                          setCurrentSong(index);
-                          setActivePage("home");
-                          setIsPlaying(true);
+                            setCurrentSong(
+                              index
+                            );
 
-                        }}
-                      >
+                            setActivePage(
+                              "home"
+                            );
 
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                        />
+                            setIsPlaying(
+                              true
+                            );
 
-                        <div>
+                          }}
+                        >
 
-                          <h4>
-                            {item.title}
-                          </h4>
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                          />
 
-                          <p>
-                            {item.artist}
-                          </p>
+                          <div>
+
+                            <h4>
+                              {item.title}
+                            </h4>
+
+                            <p>
+                              {item.artist}
+                            </p>
+
+                          </div>
+
+                          <span>
+                            {formatTime(
+                              item.duration
+                            )}
+                          </span>
 
                         </div>
-
-                        <span>
-                          {formatTime(
-                            item.duration
-                          )}
-                        </span>
-
-                      </div>
+                      )
                     )
-                  )}
+                  }
 
                 </div>
               )}
@@ -1346,7 +1505,8 @@ function App() {
             <section
               className="recent"
               style={{
-                marginTop: "30px",
+                marginTop:
+                  "30px",
               }}
             >
 
@@ -1371,12 +1531,17 @@ function App() {
                       <div>
 
                         <h4>
-                          📁 {playlist.name}
+                          📁{" "}
+                          {
+                            playlist.name
+                          }
                         </h4>
 
                         <p>
                           {
-                            playlist.songs.length
+                            playlist
+                              .songs
+                              .length
                           }{" "}
                           songs
                         </p>
@@ -1397,31 +1562,61 @@ function App() {
           )}
 
         {/* ================= FOOTER ================= */}
-<nav className="mobile-bottom-nav">
-  <button onClick={goHome}>⌂<span>Home</span></button>
-  <button onClick={showLiked}>♥<span>Liked</span></button>
-  <button onClick={showLibrary}>▣<span>Library</span></button>
-</nav>
+
+        <nav className="mobile-bottom-nav">
+
+          <button onClick={goHome}>
+            ⌂
+            <span>
+              Home
+            </span>
+          </button>
+
+          <button onClick={showLiked}>
+            ♥
+            <span>
+              Liked
+            </span>
+          </button>
+
+          <button onClick={showLibrary}>
+            ▣
+            <span>
+              Library
+            </span>
+          </button>
+
+        </nav>
+
         <footer
           style={{
-            textAlign: "center",
-            marginTop: "70px",
-            padding: "25px 10px",
-            borderTop: "1px solid #1c1c1c",
-            color: "#666",
-            fontSize: "13px",
+            textAlign:
+              "center",
+            marginTop:
+              "70px",
+            padding:
+              "25px 10px",
+            borderTop:
+              "1px solid #1c1c1c",
+            color:
+              "#666",
+            fontSize:
+              "13px",
           }}
         >
           Made with ❤️ by{" "}
 
           <span
             style={{
-              color: "#1ed760",
-              fontWeight: "bold",
+              color:
+                "#1ed760",
+              fontWeight:
+                "bold",
             }}
           >
             Aditya Gurmaita
           </span>
+
         </footer>
 
         {/* ================= AUDIO ================= */}
@@ -1429,8 +1624,12 @@ function App() {
         <audio
           ref={audioRef}
           src={song?.audio}
-          onTimeUpdate={handleTimeUpdate}
-          onEnded={handleEnded}
+          onTimeUpdate={
+            handleTimeUpdate
+          }
+          onEnded={
+            handleEnded
+          }
         />
 
         {/* ================= RIGHT NOW PLAYING ================= */}
@@ -1438,7 +1637,22 @@ function App() {
         {!loading &&
           song &&
           activePage === "home" && (
-            <aside className="right-player">
+            <aside
+              className="right-player"
+              onClick={(e) => {
+                if (
+                  window.innerWidth <=
+                    700 &&
+                  !e.target.closest(
+                    "button, input"
+                  )
+                ) {
+                  setShowMobileNowPlaying(
+                    true
+                  );
+                }
+              }}
+            >
 
               <div className="right-player-title">
 
@@ -1499,7 +1713,10 @@ function App() {
                       ? "liked"
                       : ""
                   }`}
-                  onClick={toggleLike}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleLike();
+                  }}
                 >
                   {isLiked(song.id)
                     ? "♥"
@@ -1518,16 +1735,23 @@ function App() {
                   max="100"
                   value={progress}
                   onChange={handleSeek}
+                  onClick={(e) =>
+                    e.stopPropagation()
+                  }
                 />
 
                 <div>
 
                   <span>
-                    {formatTime(currentTime)}
+                    {formatTime(
+                      currentTime
+                    )}
                   </span>
 
                   <span>
-                    {formatTime(duration)}
+                    {formatTime(
+                      duration
+                    )}
                   </span>
 
                 </div>
@@ -1539,9 +1763,12 @@ function App() {
               <div className="right-controls">
 
                 <button
-                  onClick={() =>
-                    setShuffle(!shuffle)
-                  }
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShuffle(
+                      !shuffle
+                    );
+                  }}
                   className={
                     shuffle
                       ? "active-control"
@@ -1552,14 +1779,20 @@ function App() {
                 </button>
 
                 <button
-                  onClick={previousSong}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    previousSong();
+                  }}
                 >
                   ⏮
                 </button>
 
                 <button
                   className="right-play"
-                  onClick={togglePlay}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    togglePlay();
+                  }}
                 >
                   {isPlaying
                     ? "❚❚"
@@ -1567,15 +1800,21 @@ function App() {
                 </button>
 
                 <button
-                  onClick={nextSong}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    nextSong();
+                  }}
                 >
                   ⏭
                 </button>
 
                 <button
-                  onClick={() =>
-                    setRepeat(!repeat)
-                  }
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setRepeat(
+                      !repeat
+                    );
+                  }}
                   className={
                     repeat
                       ? "active-control"
@@ -1592,11 +1831,13 @@ function App() {
               <div className="right-volume">
 
                 <span
-                  onClick={() =>
-                    setMuted(!muted)
-                  }
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMuted(!muted);
+                  }}
                 >
-                  {muted || volume === 0
+                  {muted ||
+                  volume === 0
                     ? "🔇"
                     : volume < 0.5
                     ? "🔉"
@@ -1609,20 +1850,35 @@ function App() {
                   max="1"
                   step="0.01"
                   value={
-                    muted ? 0 : volume
+                    muted
+                      ? 0
+                      : volume
                   }
                   onChange={(e) => {
 
+                    e.stopPropagation();
+
                     const value =
-                      Number(e.target.value);
+                      Number(
+                        e.target.value
+                      );
 
-                    setVolume(value);
+                    setVolume(
+                      value
+                    );
 
-                    if (value > 0) {
-                      setMuted(false);
+                    if (
+                      value > 0
+                    ) {
+                      setMuted(
+                        false
+                      );
                     }
 
                   }}
+                  onClick={(e) =>
+                    e.stopPropagation()
+                  }
                 />
 
               </div>
@@ -1638,7 +1894,8 @@ function App() {
                 {songs
                   .filter(
                     (_, index) =>
-                      index !== currentSong
+                      index !==
+                      currentSong
                   )
                   .slice(0, 4)
                   .map((item) => {
@@ -1646,16 +1903,18 @@ function App() {
                     const index =
                       songs.findIndex(
                         (s) =>
-                          s.id === item.id
+                          s.id ===
+                          item.id
                       );
 
                     return (
                       <div
                         className="up-next-song"
                         key={item.id}
-                        onClick={() =>
-                          playSong(index)
-                        }
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          playSong(index);
+                        }}
                       >
 
                         <img
@@ -1689,6 +1948,945 @@ function App() {
               </div>
 
             </aside>
+          )}
+
+        {/* =====================================================
+            MOBILE FULL SCREEN NOW PLAYING
+            ===================================================== */}
+
+        {showMobileNowPlaying &&
+          song && (
+            <div
+              className="mobile-full-now-playing"
+              style={mobileNowPlayingStyle}
+            >
+
+              {/* TOP BAR */}
+
+              <div
+                style={{
+                  display:
+                    "flex",
+                  alignItems:
+                    "center",
+                  justifyContent:
+                    "space-between",
+                  marginBottom:
+                    "22px",
+                }}
+              >
+
+                <button
+                  onClick={() =>
+                    setShowMobileNowPlaying(
+                      false
+                    )
+                  }
+                  style={{
+                    width:
+                      "42px",
+                    height:
+                      "42px",
+                    borderRadius:
+                      "50%",
+                    border:
+                      "1px solid rgba(255,255,255,.15)",
+                    background:
+                      "rgba(255,255,255,.08)",
+                    color:
+                      "#fff",
+                    fontSize:
+                      "22px",
+                    cursor:
+                      "pointer",
+                  }}
+                >
+                  ↓
+                </button>
+
+                <div
+                  style={{
+                    textAlign:
+                      "center",
+                  }}
+                >
+                  <small
+                    style={{
+                      color:
+                        "#1ed760",
+                      fontWeight:
+                        "700",
+                      letterSpacing:
+                        "2px",
+                      fontSize:
+                        "10px",
+                    }}
+                  >
+                    NOW PLAYING
+                  </small>
+
+                  <div
+                    style={{
+                      fontSize:
+                        "12px",
+                      color:
+                        "#aaa",
+                      marginTop:
+                        "3px",
+                    }}
+                  >
+                    Soundify
+                  </div>
+                </div>
+
+                <button
+                  onClick={() =>
+                    setShowAccount(
+                      !showAccount
+                    )
+                  }
+                  style={{
+                    width:
+                      "42px",
+                    height:
+                      "42px",
+                    borderRadius:
+                      "50%",
+                    border:
+                      "1px solid rgba(255,255,255,.15)",
+                    background:
+                      "rgba(255,255,255,.08)",
+                    color:
+                      "#fff",
+                    fontSize:
+                      "16px",
+                    fontWeight:
+                      "700",
+                    cursor:
+                      "pointer",
+                  }}
+                >
+                  {userName
+                    .charAt(0)
+                    .toUpperCase()}
+                </button>
+
+              </div>
+
+              {/* LARGE ALBUM ART */}
+
+              <div
+                style={{
+                  width:
+                    "min(82vw, 360px)",
+                  height:
+                    "min(82vw, 360px)",
+                  margin:
+                    "10px auto 28px",
+                  borderRadius:
+                    "18px",
+                  overflow:
+                    "hidden",
+                  boxShadow:
+                    "0 25px 70px rgba(0,0,0,.55)",
+                  position:
+                    "relative",
+                }}
+              >
+
+                <img
+                  src={song.image}
+                  alt={song.title}
+                  style={{
+                    width:
+                      "100%",
+                    height:
+                      "100%",
+                    objectFit:
+                      "cover",
+                    display:
+                      "block",
+                  }}
+                />
+
+                {isPlaying && (
+                  <div
+                    style={{
+                      position:
+                        "absolute",
+                      left:
+                        "18px",
+                      bottom:
+                        "18px",
+                      display:
+                        "flex",
+                      alignItems:
+                        "flex-end",
+                      gap:
+                        "4px",
+                      height:
+                        "30px",
+                    }}
+                  >
+
+                    <span
+                      style={{
+                        width:
+                          "4px",
+                        height:
+                          "16px",
+                        background:
+                          "#1ed760",
+                        borderRadius:
+                          "4px",
+                        animation:
+                          "soundifyBar 0.8s ease-in-out infinite alternate",
+                      }}
+                    />
+
+                    <span
+                      style={{
+                        width:
+                          "4px",
+                        height:
+                          "25px",
+                        background:
+                          "#1ed760",
+                        borderRadius:
+                          "4px",
+                        animation:
+                          "soundifyBar 0.55s ease-in-out infinite alternate",
+                      }}
+                    />
+
+                    <span
+                      style={{
+                        width:
+                          "4px",
+                        height:
+                          "12px",
+                        background:
+                          "#1ed760",
+                        borderRadius:
+                          "4px",
+                        animation:
+                          "soundifyBar 0.7s ease-in-out infinite alternate",
+                      }}
+                    />
+
+                    <span
+                      style={{
+                        width:
+                          "4px",
+                        height:
+                          "22px",
+                        background:
+                          "#1ed760",
+                        borderRadius:
+                          "4px",
+                        animation:
+                          "soundifyBar 0.45s ease-in-out infinite alternate",
+                      }}
+                    />
+
+                  </div>
+                )}
+
+              </div>
+
+              {/* SONG INFORMATION */}
+
+              <div
+                style={{
+                  display:
+                    "flex",
+                  alignItems:
+                    "center",
+                  justifyContent:
+                    "space-between",
+                  gap:
+                    "14px",
+                }}
+              >
+
+                <div
+                  style={{
+                    minWidth:
+                      0,
+                    flex:
+                      1,
+                  }}
+                >
+
+                  <h1
+                    style={{
+                      margin:
+                        "0",
+                      fontSize:
+                        "22px",
+                      lineHeight:
+                        "1.25",
+                      fontWeight:
+                        "700",
+                      whiteSpace:
+                        "nowrap",
+                      overflow:
+                        "hidden",
+                      textOverflow:
+                        "ellipsis",
+                    }}
+                  >
+                    {song.title}
+                  </h1>
+
+                  <p
+                    style={{
+                      margin:
+                        "6px 0 0",
+                      color:
+                        "#b8b8b8",
+                      fontSize:
+                        "14px",
+                      whiteSpace:
+                        "nowrap",
+                      overflow:
+                        "hidden",
+                      textOverflow:
+                        "ellipsis",
+                    }}
+                  >
+                    {song.artist}
+                  </p>
+
+                  <small
+                    style={{
+                      display:
+                        "block",
+                      marginTop:
+                        "3px",
+                      color:
+                        "#777",
+                      whiteSpace:
+                        "nowrap",
+                      overflow:
+                        "hidden",
+                      textOverflow:
+                        "ellipsis",
+                    }}
+                  >
+                    {song.album}
+                  </small>
+
+                </div>
+
+                <button
+                  onClick={toggleLike}
+                  style={{
+                    flex:
+                      "0 0 auto",
+                    width:
+                      "44px",
+                    height:
+                      "44px",
+                    borderRadius:
+                      "50%",
+                    border:
+                      "1px solid rgba(255,255,255,.12)",
+                    background:
+                      "rgba(255,255,255,.06)",
+                    color:
+                      isLiked(song.id)
+                        ? "#1ed760"
+                        : "#fff",
+                    fontSize:
+                      "25px",
+                    cursor:
+                      "pointer",
+                  }}
+                >
+                  {isLiked(song.id)
+                    ? "♥"
+                    : "♡"}
+                </button>
+
+              </div>
+
+              {/* PROGRESS */}
+
+              <div
+                style={{
+                  marginTop:
+                    "25px",
+                }}
+              >
+
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={progress}
+                  onChange={handleSeek}
+                  style={{
+                    width:
+                      "100%",
+                    accentColor:
+                      "#1ed760",
+                    cursor:
+                      "pointer",
+                  }}
+                />
+
+                <div
+                  style={{
+                    display:
+                      "flex",
+                    justifyContent:
+                      "space-between",
+                    color:
+                      "#888",
+                    fontSize:
+                      "11px",
+                    marginTop:
+                      "4px",
+                  }}
+                >
+
+                  <span>
+                    {formatTime(
+                      currentTime
+                    )}
+                  </span>
+
+                  <span>
+                    {formatTime(
+                      duration
+                    )}
+                  </span>
+
+                </div>
+
+              </div>
+
+              {/* CONTROLS */}
+
+              <div
+                style={{
+                  display:
+                    "flex",
+                  alignItems:
+                    "center",
+                  justifyContent:
+                    "space-between",
+                  marginTop:
+                    "18px",
+                }}
+              >
+
+                <button
+                  onClick={() =>
+                    setShuffle(
+                      !shuffle
+                    )
+                  }
+                  style={{
+                    background:
+                      "transparent",
+                    border:
+                      "none",
+                    color:
+                      shuffle
+                        ? "#1ed760"
+                        : "#aaa",
+                    fontSize:
+                      "20px",
+                    cursor:
+                      "pointer",
+                  }}
+                >
+                  🔀
+                </button>
+
+                <button
+                  onClick={previousSong}
+                  style={{
+                    background:
+                      "transparent",
+                    border:
+                      "none",
+                    color:
+                      "#fff",
+                    fontSize:
+                      "25px",
+                    cursor:
+                      "pointer",
+                  }}
+                >
+                  ⏮
+                </button>
+
+                <button
+                  onClick={togglePlay}
+                  style={{
+                    width:
+                      "66px",
+                    height:
+                      "66px",
+                    borderRadius:
+                      "50%",
+                    border:
+                      "none",
+                    background:
+                      "#1ed760",
+                    color:
+                      "#000",
+                    fontSize:
+                      "24px",
+                    fontWeight:
+                      "700",
+                    cursor:
+                      "pointer",
+                    boxShadow:
+                      "0 8px 30px rgba(30,215,96,.25)",
+                  }}
+                >
+                  {isPlaying
+                    ? "❚❚"
+                    : "▶"}
+                </button>
+
+                <button
+                  onClick={nextSong}
+                  style={{
+                    background:
+                      "transparent",
+                    border:
+                      "none",
+                    color:
+                      "#fff",
+                    fontSize:
+                      "25px",
+                    cursor:
+                      "pointer",
+                  }}
+                >
+                  ⏭
+                </button>
+
+                <button
+                  onClick={() =>
+                    setRepeat(
+                      !repeat
+                    )
+                  }
+                  style={{
+                    background:
+                      "transparent",
+                    border:
+                      "none",
+                    color:
+                      repeat
+                        ? "#1ed760"
+                        : "#aaa",
+                    fontSize:
+                      "20px",
+                    cursor:
+                      "pointer",
+                  }}
+                >
+                  🔁
+                </button>
+
+              </div>
+
+              {/* VOLUME */}
+
+              <div
+                style={{
+                  display:
+                    "flex",
+                  alignItems:
+                    "center",
+                  gap:
+                    "10px",
+                  marginTop:
+                    "20px",
+                }}
+              >
+
+                <button
+                  onClick={() =>
+                    setMuted(!muted)
+                  }
+                  style={{
+                    border:
+                      "none",
+                    background:
+                      "transparent",
+                    color:
+                      "#aaa",
+                    fontSize:
+                      "18px",
+                    cursor:
+                      "pointer",
+                  }}
+                >
+                  {muted ||
+                  volume === 0
+                    ? "🔇"
+                    : "🔊"}
+                </button>
+
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={
+                    muted
+                      ? 0
+                      : volume
+                  }
+                  onChange={(e) => {
+
+                    const value =
+                      Number(
+                        e.target.value
+                      );
+
+                    setVolume(
+                      value
+                    );
+
+                    if (
+                      value > 0
+                    ) {
+                      setMuted(
+                        false
+                      );
+                    }
+
+                  }}
+                  style={{
+                    flex:
+                      1,
+                    accentColor:
+                      "#1ed760",
+                  }}
+                />
+
+              </div>
+
+              {/* UP NEXT */}
+
+              <div
+                style={{
+                  marginTop:
+                    "28px",
+                }}
+              >
+
+                <h3
+                  style={{
+                    margin:
+                      "0 0 12px",
+                    fontSize:
+                      "15px",
+                  }}
+                >
+                  Up Next
+                </h3>
+
+                <div
+                  style={{
+                    display:
+                      "flex",
+                    flexDirection:
+                      "column",
+                    gap:
+                      "8px",
+                  }}
+                >
+
+                  {songs
+                    .filter(
+                      (_, index) =>
+                        index !==
+                        currentSong
+                    )
+                    .slice(0, 5)
+                    .map((item) => {
+
+                      const index =
+                        songs.findIndex(
+                          (s) =>
+                            s.id ===
+                            item.id
+                        );
+
+                      return (
+                        <div
+                          key={item.id}
+                          onClick={() =>
+                            playMobileSong(
+                              index
+                            )
+                          }
+                          style={{
+                            display:
+                              "flex",
+                            alignItems:
+                              "center",
+                            gap:
+                              "10px",
+                            padding:
+                              "8px",
+                            borderRadius:
+                              "10px",
+                            background:
+                              "rgba(255,255,255,.055)",
+                            cursor:
+                              "pointer",
+                          }}
+                        >
+
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            style={{
+                              width:
+                                "45px",
+                              height:
+                                "45px",
+                              borderRadius:
+                                "7px",
+                              objectFit:
+                                "cover",
+                            }}
+                          />
+
+                          <div
+                            style={{
+                              minWidth:
+                                0,
+                              flex:
+                                1,
+                            }}
+                          >
+
+                            <strong
+                              style={{
+                                display:
+                                  "block",
+                                fontSize:
+                                  "12px",
+                                whiteSpace:
+                                  "nowrap",
+                                overflow:
+                                  "hidden",
+                                textOverflow:
+                                  "ellipsis",
+                              }}
+                            >
+                              {item.title}
+                            </strong>
+
+                            <span
+                              style={{
+                                display:
+                                  "block",
+                                marginTop:
+                                  "3px",
+                                color:
+                                  "#888",
+                                fontSize:
+                                  "10px",
+                                whiteSpace:
+                                  "nowrap",
+                                overflow:
+                                  "hidden",
+                                textOverflow:
+                                  "ellipsis",
+                              }}
+                            >
+                              {item.artist}
+                            </span>
+
+                          </div>
+
+                          <span
+                            style={{
+                              color:
+                                "#1ed760",
+                              fontSize:
+                                "14px",
+                            }}
+                          >
+                            ▶
+                          </span>
+
+                        </div>
+                      );
+
+                    })}
+
+                </div>
+
+              </div>
+
+              {/* MOBILE ACCOUNT MENU */}
+
+              {showAccount && (
+                <div
+                  style={{
+                    position:
+                      "fixed",
+                    top:
+                      "72px",
+                    right:
+                      "18px",
+                    width:
+                      "190px",
+                    background:
+                      "#151915",
+                    border:
+                      "1px solid rgba(255,255,255,.1)",
+                    borderRadius:
+                      "14px",
+                    padding:
+                      "8px",
+                    boxShadow:
+                      "0 15px 40px rgba(0,0,0,.5)",
+                  }}
+                >
+
+                  <button
+                    onClick={() => {
+                      setShowAccount(
+                        false
+                      );
+
+                      setShowMobileNowPlaying(
+                        false
+                      );
+
+                      showLiked();
+                    }}
+                    style={{
+                      width:
+                        "100%",
+                      padding:
+                        "11px",
+                      border:
+                        "none",
+                      background:
+                        "transparent",
+                      color:
+                        "#fff",
+                      textAlign:
+                        "left",
+                      borderRadius:
+                        "8px",
+                      cursor:
+                        "pointer",
+                    }}
+                  >
+                    ♥ Liked Songs
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setShowAccount(
+                        false
+                      );
+
+                      setShowMobileNowPlaying(
+                        false
+                      );
+
+                      showLibrary();
+                    }}
+                    style={{
+                      width:
+                        "100%",
+                      padding:
+                        "11px",
+                      border:
+                        "none",
+                      background:
+                        "transparent",
+                      color:
+                        "#fff",
+                      textAlign:
+                        "left",
+                      borderRadius:
+                        "8px",
+                      cursor:
+                        "pointer",
+                    }}
+                  >
+                    ♫ Your Library
+                  </button>
+
+                  <div
+                    style={{
+                      height:
+                        "1px",
+                      background:
+                        "rgba(255,255,255,.08)",
+                      margin:
+                        "4px 0",
+                    }}
+                  />
+
+                  <button
+                    onClick={logout}
+                    style={{
+                      width:
+                        "100%",
+                      padding:
+                        "11px",
+                      border:
+                        "none",
+                      background:
+                        "transparent",
+                      color:
+                        "#ff6969",
+                      textAlign:
+                        "left",
+                      borderRadius:
+                        "8px",
+                      cursor:
+                        "pointer",
+                    }}
+                  >
+                    ↪ Log out
+                  </button>
+
+                </div>
+              )}
+
+              {/* SMALL ANIMATION */}
+
+              <style>
+                {`
+                  @keyframes soundifyBar {
+                    from {
+                      transform: scaleY(.45);
+                    }
+                    to {
+                      transform: scaleY(1);
+                    }
+                  }
+
+                  @media (min-width: 701px) {
+                    .mobile-full-now-playing {
+                      display: none !important;
+                    }
+                  }
+                `}
+              </style>
+
+            </div>
           )}
 
       </main>
