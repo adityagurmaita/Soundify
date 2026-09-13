@@ -10,6 +10,8 @@ function App() {
   const audioRef = useRef(null);
   const searchRef = useRef(null);
   const accountRef = useRef(null);
+  const mobileAccountRef = useRef(null);
+  const mobileNowPlayingAccountRef = useRef(null);
 
   // ================= MUSIC =================
 
@@ -123,10 +125,12 @@ function App() {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (
-        accountRef.current &&
-        !accountRef.current.contains(e.target)
-      ) {
+      const insideDesktop = accountRef.current?.contains(e.target);
+      const insideMobile = mobileAccountRef.current?.contains(e.target);
+      const insideNowPlaying =
+        mobileNowPlayingAccountRef.current?.contains(e.target);
+
+      if (!insideDesktop && !insideMobile && !insideNowPlaying) {
         setShowAccount(false);
       }
     };
@@ -134,10 +138,7 @@ function App() {
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener(
-        "mousedown",
-        handleClickOutside
-      );
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -850,10 +851,16 @@ function App() {
 
         {/* HEADER */}
 
-        <header>
-
+        <header
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "12px",
+            position: "relative",
+          }}
+        >
           <div>
-
             <h2>
               {activePage === "liked"
                 ? "Your Liked Songs ❤️"
@@ -863,9 +870,119 @@ function App() {
                 ? selectedPlaylist?.name
                 : `hey ${userName} 👋`}
             </h2>
-
           </div>
 
+          {/* MOBILE HOME ACCOUNT */}
+          <div
+            ref={mobileAccountRef}
+            className="mobile-header-account"
+            style={{
+              display: "none",
+              position: "relative",
+              zIndex: 10000,
+            }}
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowAccount((prev) => !prev);
+              }}
+              aria-label="Account menu"
+              style={{
+                width: "42px",
+                height: "42px",
+                borderRadius: "50%",
+                border: "1px solid rgba(255,255,255,.15)",
+                background: "#151915",
+                color: "#fff",
+                fontSize: "16px",
+                fontWeight: "700",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {userName.charAt(0).toUpperCase()}
+            </button>
+
+            {showAccount && (
+              <div
+                onMouseDown={(e) => e.stopPropagation()}
+                style={{
+                  position: "absolute",
+                  top: "50px",
+                  right: "0",
+                  width: "190px",
+                  background: "#171b17",
+                  border: "1px solid rgba(255,255,255,.1)",
+                  borderRadius: "14px",
+                  padding: "8px",
+                  boxShadow: "0 12px 30px rgba(0,0,0,.5)",
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={showLiked}
+                  style={{
+                    width: "100%",
+                    padding: "11px",
+                    border: "none",
+                    background: "transparent",
+                    color: "#fff",
+                    textAlign: "left",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  ♥ Liked Songs
+                </button>
+
+                <button
+                  type="button"
+                  onClick={showLibrary}
+                  style={{
+                    width: "100%",
+                    padding: "11px",
+                    border: "none",
+                    background: "transparent",
+                    color: "#fff",
+                    textAlign: "left",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  ♫ Your Library
+                </button>
+
+                <div
+                  style={{
+                    height: "1px",
+                    background: "rgba(255,255,255,.08)",
+                    margin: "4px 0",
+                  }}
+                />
+
+                <button
+                  type="button"
+                  onClick={logout}
+                  style={{
+                    width: "100%",
+                    padding: "11px",
+                    border: "none",
+                    background: "transparent",
+                    color: "#ff6969",
+                    textAlign: "left",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  ↪ Log out
+                </button>
+              </div>
+            )}
+          </div>
         </header>
 
         {/* ================= SEARCH ================= */}
@@ -2039,6 +2156,12 @@ function App() {
                   </div>
                 </div>
 
+                <div
+                  ref={mobileNowPlayingAccountRef}
+                  style={{
+                    position: "relative",
+                  }}
+                >
                 <button
                   onClick={() =>
                     setShowAccount(
@@ -2070,6 +2193,7 @@ function App() {
                     .charAt(0)
                     .toUpperCase()}
                 </button>
+                </div>
 
               </div>
 
@@ -2737,6 +2861,7 @@ function App() {
 
               {showAccount && (
                 <div
+                  onMouseDown={(e) => e.stopPropagation()}
                   style={{
                     position:
                       "fixed",

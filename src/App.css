@@ -5454,3 +5454,13 @@ header p{font-size:11px; margin-top:5px; color:#68736d;}
     right: 100px !important;
   }
 }
+
+/* =========================================================
+   MOBILE HEADER ACCOUNT
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .mobile-header-account {
+    display: block !important;
+  }
+}
