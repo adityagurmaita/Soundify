@@ -1766,7 +1766,7 @@ function App() {
               </button>
             </div>
           </div>
-        )
+          )}
 
         <footer
           style={{
