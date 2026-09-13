@@ -5464,3 +5464,133 @@ header p{font-size:11px; margin-top:5px; color:#68736d;}
     display: block !important;
   }
 }
+
+
+/* FINAL MOBILE SPOTIFY-STYLE LAYOUT */
+@media (max-width:700px){
+  .mobile-header-account{display:none!important}
+
+  main,.main{
+    width:100%!important;max-width:100%!important;min-width:0!important;
+    box-sizing:border-box!important;padding-bottom:118px!important;
+  }
+
+  header{padding:18px 16px 10px!important;margin:0!important;background:transparent!important}
+  header h2{margin:0!important;font-size:22px!important;line-height:1.2!important;font-weight:800!important;color:#f4f8f5!important}
+
+  .search-box{
+    margin:8px 16px 18px!important;height:48px!important;padding:0 15px!important;
+    border-radius:14px!important;background:#17201a!important;
+    border:1px solid rgba(255,255,255,.07)!important;
+  }
+  .search-box input{min-width:0!important;font-size:14px!important;color:#fff!important}
+  .search-box button{display:none!important}
+
+  .player-section,.progress-section,.controls,.volume,.discover-hero{display:none!important}
+
+  .recent{margin:0!important;padding:0 16px!important}
+  .recent h2{margin:14px 0 12px!important;font-size:18px!important;color:#f5f8f6!important}
+
+  .song-list{display:flex!important;flex-direction:column!important;gap:7px!important;overflow:visible!important}
+  .song-card{
+    min-height:64px!important;height:64px!important;width:100%!important;
+    box-sizing:border-box!important;padding:6px!important;border-radius:10px!important;
+    border:0!important;background:rgba(255,255,255,.035)!important;
+    box-shadow:none!important;transform:none!important;
+  }
+  .song-card:hover{transform:none!important;background:rgba(255,255,255,.06)!important}
+  .song-card.selected{background:rgba(30,215,96,.10)!important;border:1px solid rgba(30,215,96,.18)!important}
+  .song-card img{width:52px!important;height:52px!important;flex:0 0 52px!important;border-radius:7px!important}
+  .song-card>div{min-width:0!important;flex:1!important}
+  .song-card h4{margin:0 0 4px!important;font-size:13px!important;color:#f2f6f3!important}
+  .song-card p{margin:0!important;font-size:11px!important;color:#8e9992!important}
+  .song-card>span{padding-right:7px!important;color:#7e8a82!important}
+
+  .right-player{
+    display:flex!important;position:fixed!important;left:10px!important;right:10px!important;
+    bottom:70px!important;top:auto!important;width:auto!important;height:62px!important;
+    min-height:62px!important;z-index:9000!important;border-radius:10px!important;
+    padding:7px 8px!important;box-sizing:border-box!important;
+    background:rgba(20,28,22,.98)!important;border:1px solid rgba(255,255,255,.08)!important;
+    box-shadow:0 12px 30px rgba(0,0,0,.45)!important;
+  }
+  .right-player-title,.right-album,.right-progress{display:none!important}
+  .right-song-info{
+    position:static!important;left:auto!important;right:auto!important;flex:1!important;
+    min-width:0!important;display:flex!important;align-items:center!important;gap:9px!important;padding:0!important;
+  }
+  .right-song-info>div{min-width:0!important;flex:1!important}
+  .right-song-info h2{margin:0!important;font-size:13px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  .right-song-info p,.right-song-info small{display:block!important;margin:2px 0 0!important;font-size:10px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  .right-controls{position:static!important;width:auto!important;display:flex!important;align-items:center!important;gap:2px!important}
+  .right-controls button{margin:0!important}
+  .right-controls button:nth-child(1),.right-controls button:nth-child(5){display:none!important}
+  .right-controls .right-play{width:38px!important;height:38px!important;border-radius:50%!important;background:#1ed760!important;color:#031008!important}
+  .right-like{width:34px!important;height:34px!important;padding:0!important;font-size:19px!important;background:transparent!important}
+
+  .mobile-bottom-nav{
+    display:grid!important;grid-template-columns:repeat(5,1fr)!important;
+    position:fixed!important;left:0!important;right:0!important;bottom:0!important;
+    height:68px!important;padding:5px 4px calc(5px + env(safe-area-inset-bottom))!important;
+    box-sizing:border-box!important;background:rgba(5,8,5,.98)!important;
+    border-top:1px solid rgba(255,255,255,.08)!important;z-index:100000!important;
+  }
+  .mobile-bottom-nav button{
+    min-width:0!important;padding:2px 0!important;gap:3px!important;border:0!important;
+    background:transparent!important;color:#7e887f!important;font-size:10px!important;font-weight:600!important;
+  }
+  .mobile-bottom-nav button.active{color:#1ed760!important}
+  .mobile-nav-icon{font-size:22px!important;line-height:22px!important}
+  .mobile-nav-account{
+    width:24px!important;height:24px!important;display:flex!important;align-items:center!important;
+    justify-content:center!important;margin:0 auto!important;border-radius:50%!important;
+    background:#253229!important;color:#fff!important;font-size:11px!important;font-weight:800!important;
+  }
+  .mobile-bottom-nav button.active .mobile-nav-account{background:#1ed760!important;color:#031008!important}
+
+  .mobile-account-overlay{
+    position:fixed!important;inset:0!important;z-index:200000!important;display:flex!important;
+    align-items:flex-end!important;justify-content:center!important;background:rgba(0,0,0,.60)!important;
+    backdrop-filter:blur(5px)!important;
+  }
+  .mobile-account-sheet{
+    width:100%!important;max-width:520px!important;box-sizing:border-box!important;
+    padding:10px 18px calc(22px + env(safe-area-inset-bottom))!important;
+    border-radius:24px 24px 0 0!important;background:#151a16!important;
+    border-top:1px solid rgba(255,255,255,.10)!important;box-shadow:0 -20px 60px rgba(0,0,0,.55)!important;
+  }
+  .mobile-account-handle{width:42px!important;height:4px!important;margin:2px auto 18px!important;border-radius:10px!important;background:#56615a!important}
+  .mobile-account-profile{display:flex!important;align-items:center!important;gap:12px!important;padding:8px 0 18px!important}
+  .mobile-account-avatar{
+    width:48px!important;height:48px!important;flex:0 0 48px!important;border-radius:50%!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    background:#1ed760!important;color:#031008!important;font-size:18px!important;font-weight:800!important;
+  }
+  .mobile-account-profile strong,.mobile-account-profile span{display:block!important}
+  .mobile-account-profile strong{color:#fff!important;font-size:16px!important}
+  .mobile-account-profile span{margin-top:3px!important;color:#879188!important;font-size:11px!important}
+  .mobile-account-sheet>button{
+    width:100%!important;min-height:52px!important;display:flex!important;align-items:center!important;
+    gap:14px!important;padding:0 8px!important;border:0!important;border-radius:12px!important;
+    background:transparent!important;color:#f0f4f1!important;text-align:left!important;font-size:14px!important;
+  }
+  .mobile-account-sheet>button:hover{background:rgba(255,255,255,.06)!important}
+  .mobile-account-sheet>button>span{width:26px!important;text-align:center!important;font-size:19px!important}
+  .mobile-account-sheet .mobile-account-logout{
+    margin-top:7px!important;color:#ff6b6b!important;border-top:1px solid rgba(255,255,255,.07)!important;border-radius:0!important;
+  }
+
+  .mobile-full-now-playing{
+    position:fixed!important;inset:0!important;z-index:150000!important;overflow-y:auto!important;
+    box-sizing:border-box!important;padding:18px 18px 34px!important;
+    background:radial-gradient(circle at 50% 12%,rgba(30,215,96,.13),transparent 35%),#070b08!important;
+  }
+  .mobile-full-now-playing input[type=range]{accent-color:#1ed760!important}
+  .mobile-nowplaying-account-menu{display:none!important}
+}
+@media (max-width:390px){
+  .right-player{left:7px!important;right:7px!important}
+  .recent{padding-left:12px!important;padding-right:12px!important}
+  header{padding-left:12px!important;padding-right:12px!important}
+  .search-box{margin-left:12px!important;margin-right:12px!important}
+}

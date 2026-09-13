@@ -908,7 +908,7 @@ function App() {
             </button>
 
             {showAccount && (
-              <div
+              <divclassName="mobile-nowplaying-account-menu"
                 onMouseDown={(e) => e.stopPropagation()}
                 style={{
                   position: "absolute",
@@ -1682,28 +1682,91 @@ function App() {
 
         <nav className="mobile-bottom-nav">
 
-          <button onClick={goHome}>
-            ⌂
-            <span>
-              Home
-            </span>
+          <button
+            className={activePage === "home" ? "active" : ""}
+            onClick={goHome}
+          >
+            <span className="mobile-nav-icon">⌂</span>
+            <span>Home</span>
           </button>
 
-          <button onClick={showLiked}>
-            ♥
-            <span>
-              Liked
-            </span>
+          <button onClick={openSearch}>
+            <span className="mobile-nav-icon">⌕</span>
+            <span>Search</span>
           </button>
 
-          <button onClick={showLibrary}>
-            ▣
-            <span>
-              Library
+          <button
+            className={activePage === "library" ? "active" : ""}
+            onClick={showLibrary}
+          >
+            <span className="mobile-nav-icon">▥</span>
+            <span>Library</span>
+          </button>
+
+          <button
+            className={activePage === "liked" ? "active" : ""}
+            onClick={showLiked}
+          >
+            <span className="mobile-nav-icon">♡</span>
+            <span>Liked</span>
+          </button>
+
+          <button
+            className={showAccount ? "active" : ""}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowAccount((prev) => !prev);
+            }}
+          >
+            <span className="mobile-nav-account">
+              {userName.charAt(0).toUpperCase()}
             </span>
+            <span>Account</span>
           </button>
 
         </nav>
+
+        {showAccount && (
+          <div
+            className="mobile-account-overlay"
+            onMouseDown={(e) => {
+              if (e.target === e.currentTarget) setShowAccount(false);
+            }}
+          >
+            <div
+              className="mobile-account-sheet"
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              <div className="mobile-account-handle" />
+
+              <div className="mobile-account-profile">
+                <div className="mobile-account-avatar">
+                  {userName.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <strong>{userName}</strong>
+                  <span>Soundify account</span>
+                </div>
+              </div>
+
+              <button type="button" onClick={() => { setShowAccount(false); showLiked(); }}>
+                <span>♥</span> Liked Songs
+              </button>
+
+              <button type="button" onClick={() => { setShowAccount(false); showLibrary(); }}>
+                <span>▥</span> Your Library
+              </button>
+
+              <button type="button" onClick={() => { setShowAccount(false); openSearch(); }}>
+                <span>⌕</span> Search
+              </button>
+
+              <button type="button" className="mobile-account-logout" onClick={logout}>
+                <span>↪</span> Log out
+              </button>
+            </div>
+          </div>
+        )
 
         <footer
           style={{
