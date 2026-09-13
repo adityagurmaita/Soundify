@@ -908,7 +908,7 @@ function App() {
             </button>
 
             {showAccount && (
-              <divclassName="mobile-nowplaying-account-menu"
+              <div className="mobile-nowplaying-account-menu"
                 onMouseDown={(e) => e.stopPropagation()}
                 style={{
                   position: "absolute",
