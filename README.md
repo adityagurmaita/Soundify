@@ -1,6 +1,6 @@
 # Soundify
 
-![Project](https://img.shields.io/badge/Soundify-7957d5) ![Status](https://img.shields.io/badge/status-demo-blue)
+![Project](https://img.shields.io/badge/project-Soundify-7957d5) ![Status](https://img.shields.io/badge/status-demo-blue)
 
 **React · Firebase · Express**
 
