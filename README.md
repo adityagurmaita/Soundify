@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+# Soundify
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Project](https://img.shields.io/badge/Soundify-7957d5) ![Status](https://img.shields.io/badge/status-demo-blue)
 
-## Available Scripts
+**React · Firebase · Express**
 
-In the project directory, you can run:
+A React music-preview player with Firebase sign-in and an Express search API.
 
-### `npm start`
+## 🌐 Demo
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+[Open Soundify](https://soundify-1.onrender.com/)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The hosted frontend is available; live authentication and audio playback have not been verified in this documentation update.
 
-### `npm test`
+## ✨ Features
+- Search songs with artist, album and artwork details.
+- Play previews with volume, seek, shuffle, repeat and next/previous controls.
+- Save favorites and playlists in the current browser.
+- Sign up or sign in with Firebase email/password authentication.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🧰 Stack
+React, JavaScript, CSS, Firebase Authentication, Node.js and Express.
 
-### `npm run build`
+## 🚀 Run locally
+Use Node.js 22 or later. In the repository root, run `npm ci` then `npm start`. In a separate terminal, run `cd server`, `npm ci`, then `node server.js`. The frontend opens on port 3000; the API listens on port 5000.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Set `REACT_APP_API_URL` to the full `/api/songs` endpoint when using a hosted backend. A deployed copy needs its own Firebase project configuration in `src/firebase.js` and the correct authorized domains.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ✅ Checks
+Run `CI=true npm test -- --watchAll=false` and `npm run build`. The existing tests are not proof of live authentication or playback.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📌 Limits
+Songs are Apple iTunes Search previews, not licensed full-length tracks. Favorites and playlists use localStorage and are not synced across accounts or devices. No database-backed user library is implemented. Never commit Firebase admin credentials or private keys.
