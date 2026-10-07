@@ -636,3 +636,18 @@
     font-size: 26px;
   }
 }
+/* Keep account recovery keyboard-accessible without changing the layout. */
+button.forgot-password {
+  display: block;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+button.forgot-password:focus-visible { outline: 2px solid #1db954; outline-offset: 4px; }
+button.forgot-password:disabled { opacity: 0.6; cursor: wait; }
+
+.preview-pill{display:block;color:#5fe697;letter-spacing:1.6px;font-size:9px;margin-bottom:16px}.guest-button{width:100%;padding:14px;border:1px solid #376846;background:#14281a;color:#b3f3c9;border-radius:10px;margin-top:12px;cursor:pointer;font-weight:600}.guest-note{font-size:11px;color:#92a89c;line-height:1.7;margin-top:14px}.auth-page{background:radial-gradient(ellipse at 10% 20%,#163a28 0,transparent 50%),#060c09}

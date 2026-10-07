@@ -7,6 +7,7 @@ import { auth } from "./firebase";
 import AuthPage from "./AuthPage";
 
 function App() {
+  const [guest, setGuest] = useState(false);
   const audioRef = useRef(null);
   const searchRef = useRef(null);
   const accountRef = useRef(null);
@@ -22,7 +23,8 @@ function App() {
 
   const [volume, setVolume] = useState(() => {
     const saved = localStorage.getItem("soundify-volume");
-    return saved !== null ? Number(saved) : 0.7;
+    const value = Number(saved);
+    return saved !== null && Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0.7;
   });
 
   const [muted, setMuted] = useState(false);
@@ -37,7 +39,7 @@ function App() {
 
   const [activePage, setActivePage] = useState("home");
 
-  // ================= MOBILE NOW PLAYING =================
+  // ================= MOBILE NOW PLAYING · PREVIEW =================
 
   const [showMobileNowPlaying, setShowMobileNowPlaying] =
     useState(false);
@@ -47,7 +49,8 @@ function App() {
   const [likedSongs, setLikedSongs] = useState(() => {
     try {
       const saved = localStorage.getItem("soundify-liked-songs");
-      return saved ? JSON.parse(saved) : [];
+      const value = saved ? JSON.parse(saved) : [];
+      return Array.isArray(value) ? value.filter(x => x && x.id && x.title) : [];
     } catch {
       return [];
     }
@@ -59,8 +62,8 @@ function App() {
     try {
       const saved = localStorage.getItem("soundify-playlists");
 
-      return saved
-        ? JSON.parse(saved)
+      return saved && Array.isArray(JSON.parse(saved))
+        ? JSON.parse(saved).filter(x => x && x.id && Array.isArray(x.songs))
         : [
             {
               id: 1,
@@ -145,39 +148,41 @@ function App() {
   // ================= LOAD SONGS =================
 
   useEffect(() => {
-    loadSongs();
-  }, [query]);
-
-  const loadSongs = async () => {
-    try {
+    let cancelled = false;
+    const loadSongs = async () => {
       setLoading(true);
       setError("");
-
-      const data = await getSongs(query);
-
-      setSongs(data);
-      setCurrentSong(0);
-      setProgress(0);
-      setIsPlaying(false);
-    } catch (err) {
-      console.error(err);
-
-      setError("Songs load nahi ho paaye. Server check karo.");
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+        const data = await getSongs(query);
+        if (cancelled) return;
+        setSongs(Array.isArray(data) ? data : []);
+        setCurrentSong(0);
+        setProgress(0);
+        setIsPlaying(false);
+      } catch (err) {
+        if (!cancelled) setError("Could not load previews. Please try another search or try again shortly.");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    loadSongs();
+    return () => { cancelled = true; };
+  }, [query]);
 
   // ================= AUDIO =================
+
+  const playingRef = useRef(isPlaying);
+  playingRef.current = isPlaying;
 
   useEffect(() => {
     if (!audioRef.current || !song) return;
 
     audioRef.current.load();
 
-    if (isPlaying) {
+    if (playingRef.current) {
       audioRef.current.play().catch((err) => {
-        console.log("Playback error:", err);
+        setIsPlaying(false);
+        setError("Playback was blocked. Press play to try again.");
       });
     }
   }, [currentSong, song]);
@@ -195,6 +200,7 @@ function App() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (e.target.closest("input,textarea,select,button,[contenteditable=true]")) return;
       if (
         e.code === "Space" &&
         e.target.tagName !== "INPUT" &&
@@ -241,7 +247,7 @@ function App() {
           setIsPlaying(true);
         })
         .catch((err) => {
-          console.log(err);
+          setError("This preview could not play. Try another track.");
         });
     }
   };
@@ -266,6 +272,10 @@ function App() {
         (currentSong + 1) % songs.length;
     }
 
+    if (nextIndex === currentSong && audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch(() => setIsPlaying(false));
+    }
     setCurrentSong(nextIndex);
     setProgress(0);
     setIsPlaying(true);
@@ -502,6 +512,10 @@ function App() {
   // ================= PLAY SONG =================
 
   const playSong = (index) => {
+    if (index === currentSong && audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch(() => setIsPlaying(false));
+    }
     setCurrentSong(index);
     setProgress(0);
     setIsPlaying(true);
@@ -511,6 +525,10 @@ function App() {
   // ================= MOBILE PLAY SONG =================
 
   const playMobileSong = (index) => {
+    if (index === currentSong && audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch(() => setIsPlaying(false));
+    }
     setCurrentSong(index);
     setProgress(0);
     setIsPlaying(true);
@@ -529,6 +547,7 @@ function App() {
 
     try {
       await signOut(auth);
+      setGuest(false);
 
       setShowAccount(false);
       setShowMobileNowPlaying(false);
@@ -596,18 +615,18 @@ function App() {
 
   // ================= LOGIN PAGE =================
 
-  if (!user) {
-    return <AuthPage />;
+  if (!user && !guest) {
+    return <AuthPage onGuest={() => setGuest(true)} />;
   }
 
   // ================= USER NAME =================
 
   const userName =
-    user.displayName ||
-    user.email?.split("@")[0] ||
-    "User";
+    user?.displayName ||
+    user?.email?.split("@")[0] ||
+    "Guest";
 
-  // ================= MOBILE NOW PLAYING STYLES =================
+  // ================= MOBILE NOW PLAYING · PREVIEW STYLES =================
 
   const mobileNowPlayingStyle = {
     position: "fixed",
@@ -828,7 +847,7 @@ function App() {
               </strong>
 
               <span>
-                {user.email}
+                {user?.email || "Guest preview"}
               </span>
 
             </div>
@@ -1024,6 +1043,8 @@ function App() {
           </div>
         )}
 
+        {activePage === "home" && <div className="preview-banner"><span>DISCOVER WITH SOUNDIFY</span><h3>A little preview. A new favorite.</h3><p>Listen to short iTunes previews. Your likes and playlists stay in this browser.</p></div>}
+        {!loading && !error && songs.length === 0 && activePage === "home" && <div className="status">No playable previews found. Try another artist or song.</div>}
         {/* ================= HOME PLAYER ================= */}
 
         {!loading &&
@@ -1066,7 +1087,7 @@ function App() {
                 <div className="song-info">
 
                   <p>
-                    NOW PLAYING
+                    NOW PLAYING · PREVIEW
                   </p>
 
                   <h1>
@@ -1088,6 +1109,7 @@ function App() {
                         : ""
                     }`}
                     onClick={toggleLike}
+                    aria-label={isLiked(song.id) ? "Unlike track" : "Like track"}
                   >
                     {isLiked(song.id)
                       ? "♥"
@@ -1138,7 +1160,7 @@ function App() {
                   onClick={() =>
                     setShuffle(!shuffle)
                   }
-                  title="Shuffle"
+                  title="Shuffle" aria-label="Shuffle" aria-pressed={shuffle}
                 >
                   {shuffle
                     ? "🔀"
@@ -1148,6 +1170,7 @@ function App() {
                 <button
                   className="control-btn"
                   onClick={previousSong}
+                  aria-label="Previous track"
                 >
                   ⏮
                 </button>
@@ -1155,6 +1178,7 @@ function App() {
                 <button
                   className="play-btn"
                   onClick={togglePlay}
+                  aria-label={isPlaying ? "Pause" : "Play"}
                 >
                   {isPlaying
                     ? "❚❚"
@@ -1164,6 +1188,7 @@ function App() {
                 <button
                   className="control-btn"
                   onClick={nextSong}
+                  aria-label="Next track"
                 >
                   ⏭
                 </button>
@@ -1173,7 +1198,7 @@ function App() {
                   onClick={() =>
                     setRepeat(!repeat)
                   }
-                  title="Repeat"
+                  title="Repeat" aria-label="Repeat" aria-pressed={repeat}
                 >
                   {repeat
                     ? "🔁"
@@ -1235,7 +1260,7 @@ function App() {
                 <h2>
                   {query
                     ? `Search results for "${query}"`
-                    : "Popular Songs"}
+                    : "Popular previews"}
                 </h2>
 
                 <div className="song-list">
@@ -1812,7 +1837,7 @@ function App() {
           }
         />
 
-        {/* ================= RIGHT NOW PLAYING ================= */}
+        {/* ================= RIGHT NOW PLAYING · PREVIEW ================= */}
 
         {!loading &&
           song &&
@@ -1837,7 +1862,7 @@ function App() {
               <div className="right-player-title">
 
                 <span>
-                  NOW PLAYING
+                  NOW PLAYING · PREVIEW
                 </span>
 
                 <span className="live-dot"></span>
@@ -1888,6 +1913,7 @@ function App() {
                 </div>
 
                 <button
+                  aria-label={isLiked(song.id) ? "Unlike track" : "Like track"}
                   className={`right-like ${
                     isLiked(song.id)
                       ? "liked"
@@ -1969,6 +1995,7 @@ function App() {
 
                 <button
                   className="right-play"
+                  aria-label={isPlaying ? "Pause" : "Play"}
                   onClick={(e) => {
                     e.stopPropagation();
                     togglePlay();
@@ -2131,7 +2158,7 @@ function App() {
           )}
 
         {/* =====================================================
-            MOBILE FULL SCREEN NOW PLAYING
+            MOBILE FULL SCREEN NOW PLAYING · PREVIEW
             ===================================================== */}
 
         {showMobileNowPlaying &&
@@ -2202,7 +2229,7 @@ function App() {
                         "10px",
                     }}
                   >
-                    NOW PLAYING
+                    NOW PLAYING · PREVIEW
                   </small>
 
                   <div
@@ -2468,6 +2495,7 @@ function App() {
 
                 <button
                   onClick={toggleLike}
+                    aria-label={isLiked(song.id) ? "Unlike track" : "Like track"}
                   style={{
                     flex:
                       "0 0 auto",
@@ -2595,6 +2623,7 @@ function App() {
 
                 <button
                   onClick={previousSong}
+                  aria-label="Previous track"
                   style={{
                     background:
                       "transparent",
@@ -2613,6 +2642,7 @@ function App() {
 
                 <button
                   onClick={togglePlay}
+                  aria-label={isPlaying ? "Pause" : "Play"}
                   style={{
                     width:
                       "66px",
@@ -2643,6 +2673,7 @@ function App() {
 
                 <button
                   onClick={nextSong}
+                  aria-label="Next track"
                   style={{
                     background:
                       "transparent",

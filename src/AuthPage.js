@@ -5,11 +5,12 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 import { auth } from "./firebase";
 
-function AuthPage() {
+function AuthPage({ onGuest }) {
   const [mode, setMode] = useState("login");
 
   const [name, setName] = useState("");
@@ -115,6 +116,26 @@ function AuthPage() {
     }
   };
 
+  const handlePasswordReset = async () => {
+    setError("");
+    setMessage("");
+    if (!email.trim()) {
+      setError("Enter your email address first, then choose Forgot password.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, email.trim());
+      setMessage("If an account exists for this email, check your inbox for a password reset link.");
+    } catch (err) {
+      setError(err.code === "auth/invalid-email"
+        ? "Please enter a valid email address."
+        : "Could not request a reset link. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const switchMode = (newMode) => {
     setMode(newMode);
     setError("");
@@ -159,8 +180,8 @@ function AuthPage() {
           </h1>
 
           <p>
-            Discover millions of songs, create your playlists
-            and enjoy music your way.
+            Discover short music previews, build local playlists
+            and find your next favorite.
           </p>
 
           {/* Equalizer */}
@@ -188,6 +209,7 @@ function AuthPage() {
         <div className="auth-card">
 
           <div className="auth-card-header">
+            <span className="preview-pill">MUSIC DISCOVERY · SHORT PREVIEWS</span>
             <h2>
               {mode === "login"
                 ? "Welcome Back"
@@ -293,9 +315,9 @@ function AuthPage() {
             </div>
 
             {mode === "login" && (
-              <div className="forgot-password">
+              <button type="button" className="forgot-password" onClick={handlePasswordReset} disabled={loading}>
                 Forgot password?
-              </div>
+              </button>
             )}
 
             {/* Error */}
@@ -342,6 +364,8 @@ function AuthPage() {
             </button>
 
           </form>
+          <button type="button" className="guest-button" onClick={onGuest}>Explore as guest →</button>
+          <p className="guest-note">No sign-up needed for the demo. Likes and playlists are stored on this browser, shared across sign-ins.</p>
 
           <div className="secure-text">
             🔐 Your information is securely protected

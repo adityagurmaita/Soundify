@@ -5594,3 +5594,6 @@ header p{font-size:11px; margin-top:5px; color:#68736d;}
   header{padding-left:12px!important;padding-right:12px!important}
   .search-box{margin-left:12px!important;margin-right:12px!important}
 }
+
+.preview-banner{background:linear-gradient(120deg,#17382b,#0c1b14);border:1px solid #315941;border-radius:18px;padding:24px 28px;margin:20px 0 28px}.preview-banner span{font-size:9px;letter-spacing:2px;color:#75c49b}.preview-banner h3{font-size:24px;margin:10px 0}.preview-banner p{font-size:12px;color:#9cbbaa;line-height:1.7}button:focus-visible,input:focus-visible{outline:2px solid #78e8a5;outline-offset:4px}.song-card{border-radius:13px} .search-box input{border:1px solid #254231} .main{background:radial-gradient(ellipse at 100% 0,#163026 0,transparent 45%),#090e0b}
+@media(min-width:769px){.player-section,.progress-section,.main>.controls,.main>.volume{display:none!important;pointer-events:none!important}}

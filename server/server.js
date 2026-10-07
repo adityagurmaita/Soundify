@@ -12,9 +12,11 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
+
 app.get("/api/songs", async (req, res) => {
   try {
-    const query = req.query.search || "popular music";
+    const query = String(req.query.search || "popular music").trim().slice(0, 200);
 
     const params = new URLSearchParams({
       term: query,
@@ -24,7 +26,8 @@ app.get("/api/songs", async (req, res) => {
     });
 
     const response = await fetch(
-      `https://itunes.apple.com/search?${params.toString()}`
+      `https://itunes.apple.com/search?${params.toString()}`,
+      { signal: AbortSignal.timeout(10000) }
     );
 
     if (!response.ok) {
@@ -44,7 +47,9 @@ app.get("/api/songs", async (req, res) => {
           ? track.artworkUrl100.replace("100x100", "600x600")
           : "",
         audio: track.previewUrl,
-        duration: Math.floor(track.trackTimeMillis / 1000)
+        duration: 30,
+        preview: true,
+        sourceUrl: track.trackViewUrl
       }));
 
     res.json(songs);
@@ -56,8 +61,9 @@ app.get("/api/songs", async (req, res) => {
   }
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+if (require.main === module) app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+module.exports = app;
